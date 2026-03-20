@@ -2,6 +2,7 @@ const fs = require("fs/promises");
 const bodyParser = require("body-parser")
 const path = require("path");
 const express = require("express");
+const { readFileSync } = require("fs");
 
 const app = express();
 
@@ -17,14 +18,8 @@ app.use((req, res, next) => {
 });
 
 app.get("/meals", async (req, res) => {
-  const meals = "[]" // data should be read from file
-  res.json(JSON.parse(meals));
-});
-
-app.use((req, res) => {
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
+  const meals = JSON.parse(readFileSync('./data/meals.json'))
+  res.json(meals);
 
   res.status(404).json({ message: "Not found" });
 });
