@@ -1,4 +1,3 @@
-const fs = require("fs/promises");
 const bodyParser = require("body-parser")
 const path = require("path");
 const express = require("express");
@@ -20,6 +19,12 @@ app.use((req, res, next) => {
 app.get("/meals", async (req, res) => {
   const meals = JSON.parse(readFileSync('./data/meals.json'))
   res.json(meals);
+});
+
+app.use((req, res) => {
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
 
   res.status(404).json({ message: "Not found" });
 });
